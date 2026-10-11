@@ -1,7 +1,6 @@
 # Kalman-Filter: Zustand schätzen aus verrauschten Messungen – Streamlit-Demo
 
-<!-- TODO nach dem Deploy: direkt hierher den Live-Link setzen (Leerzeile davor und danach):
-**[→ Demo live ausprobieren](https://sebastianhanisch-kalman-filter-demo.streamlit.app/)** -->
+**[→ Demo live ausprobieren](https://sebastianhanisch-kalman-filter-demo.streamlit.app/)**
 
 Erstes Stück der Linie **Zustandsschätzung und Filter** in der „Konzepte“-Reihe für die Website „Sebastian Hanisch – Operations Research und Machine Learning“.
 Im Unterschied zu den Fall-Demos zeigt die Demo **ein** Verfahren an einem wachsenden Beispiel: ein Lieferfahrzeug fährt eine Strecke, GPS misst die Position
