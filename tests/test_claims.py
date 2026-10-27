@@ -35,13 +35,13 @@ def test_standard_track_numbers(default_analysis):
     assert a.rmse_kf == pytest.approx(1.1, abs=0.15)
     assert a.rmse_vel == pytest.approx(0.24, abs=0.05)
     err_raw, err_kf = ev.eta_errors(a)
-    assert err_raw == pytest.approx(2.1, abs=0.3) and err_kf == pytest.approx(0.02, abs=0.05)
+    assert err_raw == pytest.approx(2.1, abs=0.1) and err_kf == pytest.approx(0.02, abs=0.01)
     assert a.nees_mean < 2.0      # die Standardspur wirkt „zu vorsichtig“ (Zufall dieser Spur, im README so benannt)
 
 
 def test_stationary_gain_standard_setting(default_analysis):
     assert default_analysis.k_steady[0] == pytest.approx(0.0315, abs=0.001)
-    assert default_analysis.k_steady[1] == pytest.approx(0.00155, abs=0.0002)
+    assert default_analysis.k_steady[1] == pytest.approx(0.0015, abs=0.0001)
 
 
 def test_filter_vs_raw_at_ten_meters(sigma_rows):

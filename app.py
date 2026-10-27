@@ -91,6 +91,21 @@ Weiter unten: vier Experimente (**🔬**), **🚧 Wo die Annahmen enden** und de
 """
 )
 
+# erklaerseite:einfach:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/kalman-filter-erklaert.json, nicht von Hand ändern)
+with st.expander("💬 In einfachen Worten"):
+    st.markdown(
+        """
+Ein Lieferwagen fährt eine Strecke. Das GPS zeigt seine Position, aber verrauscht: Der Punkt springt hin und her, im Tunnel fehlt er ganz. Ein Radsensor liefert zusätzlich die Geschwindigkeit.
+
+Der **Kalman-Filter** wiederholt zwei Schritte, Sekunde für Sekunde. Zuerst sagt er voraus, wo der Wagen jetzt sein müsste, und seine Unsicherheit wächst, weil der Wagen beschleunigen oder bremsen kann. Dann kommt eine Messung, und der Filter mischt Vorhersage und Messung. Ist die Vorhersage unsicher und die Messung genau, zählt die Messung mehr, sonst die Vorhersage. Danach schrumpft die Unsicherheit wieder.
+
+Der Filter liefert also eine Schätzung und eine Angabe, wie sehr man ihr glauben darf (das blaue Band in den Abbildungen). Die Demo fragt deshalb nicht nur, wie genau er ist, sondern ob diese Angabe ehrlich ist: Passt der wahre Fehler zur Unsicherheit, die der Filter selbst nennt? Mit den Reglern „Was der Filter glaubt“ können Sie ihn absichtlich falsch einstellen und beobachten, was dann passiert.
+
+[Ausführlich und verständlich erklärt, mit Fachteil](https://sebastianhanisch.net/kalman-filter-erklaert.html)
+        """
+    )
+# erklaerseite:einfach:end
+
 with st.expander("So funktioniert der Kalman-Filter", expanded=True):
     st.markdown(
         """
@@ -231,8 +246,8 @@ if trows is not None:
     t_long = trows[-1]
     st.info(
         f"Bei {t_long['tunnel']} s ohne GPS wächst die Position ohne Radsensor auf {de(t_long['err_aus'])} m Fehler bei {de(t_long['sd_aus'])} m angegebener Unsicherheit; "
-        f"mit Radsensor bleiben es {de(t_long['err_an'])} m bei {de(t_long['sd_an'])} m. In beiden Fällen **wächst das Band ehrlich mit**, "
-        "der Filter räumt nicht ein, mehr zu wissen, als er weiß."
+        f"mit Radsensor bleiben es {de(t_long['err_an'])} m bei {de(t_long['sd_an'])} m. In beiden Fällen **wächst das Band mit dem Fehler**; "
+        "gemessen ist hier der Median, nicht wie oft die Wahrheit im Band liegt."
     )
 
 st.subheader("🔬 Experiment 4: Die Verstärkung wird fest – die Brücke zur exponentiellen Glättung")
@@ -279,6 +294,28 @@ st.markdown(
 st.markdown("---")
 
 with st.expander("📐 Mathematische Formulierung"):
+    # erklaerseite:lesehilfe:start (erzeugt von tools/set_demo_explainer.py (Website-Repo) aus tools/content/explainers/kalman-filter-erklaert.json, nicht von Hand ändern)
+    st.markdown(
+        r"""
+**Lesehilfe.** Gegeben sind verrauschte Messungen der Position (GPS) und der Geschwindigkeit (Radsensor) eines Fahrzeugs. Gesucht sind Schätzungen von Position und Geschwindigkeit zu jedem Zeitpunkt samt Kovarianz, also der Unsicherheit der Schätzung.
+
+| Symbol | Bedeutung |
+|---|---|
+| $x_k = (s_k, v_k)^\top$ | Zustand zum Zeitpunkt $k$: Position und Geschwindigkeit |
+| $F$ | Übergangsmatrix: Position wächst um Geschwindigkeit mal $\Delta t$, Geschwindigkeit bleibt bis auf Zufall gleich |
+| $Q$ | Kovarianz des Prozessrauschens (zufällige Beschleunigung, Stärke $q$) |
+| $z$, $r$ | eine skalare Messung (GPS-Position oder Radsensor-Geschwindigkeit) und ihre Varianz |
+| $h$ | Messvektor: wählt aus dem Zustand die gemessene Größe aus |
+| $\hat x$, $P$ | Schätzung des Zustands und ihre Kovarianz (Unsicherheit) |
+| $S$, $K$ | Varianz der Abweichung zwischen Messung und Vorhersage und Kalman-Verstärkung (das Gewicht der Messung) |
+| $\mathrm{NEES}_k$ | normiertes Fehlerquadrat: wahrer Fehler im Verhältnis zur angegebenen Unsicherheit, Soll gleich der Zustandsdimension |
+| $\alpha$ | Gewicht der neuen Messung im einfachsten Modell (nur ein Niveau) |
+| $q$ | in der Dynamik die Stärke der zufälligen Beschleunigung ($Q \propto q^2$); im einfachsten Modell dagegen das Verhältnis von Niveau- zu Messvarianz (zwei verschiedene Größen mit demselben Buchstaben) |
+
+[Schritt für Schritt erklärt, mit Herleitung und Literatur](https://sebastianhanisch.net/kalman-filter-erklaert.html#fachleute)
+        """
+    )
+    # erklaerseite:lesehilfe:end
     st.markdown(
         r"""
 **Zustand und Modell.** Zustand $x_k = (s_k, v_k)^\top$ (Position, Geschwindigkeit) im Abstand $\Delta t$:
@@ -299,7 +336,7 @@ gegeben alle bisherigen Messungen; die Demo prüft das gegen die Lösung des ges
 
 **Stationäre Verstärkung.** Die Kovarianz-Rekursion (Riccati-Gleichung) konvergiert bei konstanten $F, Q, r$ gegen einen festen Wert; die zugehörige Verstärkung $K_\infty$ ist ein festes
 Gewicht der Messung. Im Lokales-Niveau-Modell $x_{k+1} = x_k + w_k$, $z_k = x_k + \varepsilon_k$ mit $q = \operatorname{Var}(w)/\operatorname{Var}(\varepsilon)$ folgt
-$\alpha = (\sqrt{q^2 + 4q} - q)/2$; das ist die einfache exponentielle Glättung mit diesem Glättungsparameter.
+$\alpha = (\sqrt{q^2 + 4q} - q)/2$; das ist die einfache exponentielle Glättung mit diesem Glättungsparameter. Dieses $q$ (Verhältnis zweier Varianzen) ist nicht die Beschleunigungsstärke $q$ des Modells oben.
 
 **Literatur.** R. E. Kalman (1960), *A New Approach to Linear Filtering and Prediction Problems*, Transactions of the ASME – Journal of Basic Engineering 82 (Series D), 35–45.
 Y. Bar-Shalom, X. R. Li, T. Kirubarajan (2001), *Estimation with Applications to Tracking and Navigation*, Wiley (Standardwerk zur Zustandsschätzung).

@@ -29,24 +29,24 @@ Vier Experimente; die ersten drei rechnen auf Knopfdruck über je 40 feste Fahrt
 
 ## Befunde (gemessen, keine Behauptungen)
 
-Alle Zahlen: Standardeinstellung (GPS 10 m, Fahrunruhe 0,3 m/s², Tunnel 20 s), Median über die 40 festen Fahrten; `tests/test_claims.py` rechnet jede nach.
+Alle Zahlen: Standardeinstellung (GPS 10 m, Fahrunruhe 0,3 m/s², Radsensor-Rauschen 0,3 m/s, Tunnel 20 s), über die 40 festen Fahrten; `tests/test_claims.py` rechnet jede nach. Positionsfehler und Tunnelwerte (am letzten Tunnelschritt) sind Mediane, NEES und Abdeckung Mittelwerte über diese Fahrten (`kal_evaluation.py`).
 
 | Frage | Befund |
 |---|---|
-| Was bringt der Filter gegen den Rohwert? | Rohwert **9,7 m**, Filter nur mit GPS **4,9 m**, mit GPS und Radsensor **1,6 m** (Positionsfehler, RMSE). Das Glätten allein halbiert den Fehler ungefähr; der größere Teil kommt aus der zusätzlichen Information des Radsensors. |
+| Was bringt der Filter gegen den Rohwert? | Rohwert **9,7 m**, Filter nur mit GPS **4,9 m**, mit GPS und Radsensor **1,6 m** (Positionsfehler, RMSE). Das Glätten allein halbiert den Fehler ungefähr; die zusätzliche Information des Radsensors senkt ihn danach weiter. Welcher Teil der größere ist, hängt vom Maß (Meter oder Faktor) und von der Reihenfolge ab. |
 | Ehrlichkeit bei richtigem Modell? | Mittlere NEES über 150 Fahrten (Orakel-Test) **2,0** (Soll 2). Einzelne Fahrten streuen stark; die 40 festen ergeben 1,8. |
 | Filter glaubt zehnmal weniger Prozessrauschen? | NEES **61**, nur **80 %** der Zeit liegt die Wahrheit im 95-%-Band. |
 | Filter glaubt zehnmal weniger Messrauschen? | NEES **6,5**, nur **59 %** im Band. |
 | Und zu große Annahmen? | Ehrlich bleibt er (NEES 1,5), kostet aber Genauigkeit: Positionsfehler **2,3 m** statt 1,6 m bei zehnmal zu großem Q. |
-| 40 s Tunnel ohne Radsensor | Position im Median **49 m** daneben, der Filter gibt **57 m** (1 Sigma) an: das Band wächst ehrlich mit. |
+| 40 s Tunnel ohne Radsensor | Position im Median **49 m** daneben, der Filter gibt **57 m** (1 Sigma, Median) an: das Band wächst mit dem Fehler. Wie oft die Wahrheit im Tunnel im Band liegt, ist nicht gemessen. |
 | 40 s Tunnel mit Radsensor | **1,4 m** Fehler bei 2,7 m angegebener Unsicherheit: die Geschwindigkeit trägt die Position. |
 | Stationäre Verstärkung (Standard) | Position **0,0315**, Geschwindigkeit **0,0015**; im Lokales-Niveau-Modell ist α = (√(q²+4q) − q)/2: q = 0,01 → 0,0951, 0,1 → 0,2702, 1 → 0,6180. |
-| Ankunftszeit bei 100 s (Standardfahrt, Seed 35) | aus GPS-Rohwerten um 2,1 s daneben, aus dem Filter um 0,02 s. Eine einzelne Fahrt, keine Aussage über die Streuung. |
+| Ankunftszeit bei 100 s (Standardfahrt, Seed 35) | aus GPS-Rohwerten um 2,1 s daneben, aus dem Filter (mit GPS und Radsensor) um 0,02 s. Eine einzelne Fahrt, keine Aussage über die Streuung. |
 
 ## Ehrliche Grenzen
 
 - **Die Wahrheit ist das Modell.** Die Fahrt wird mit dem Modell des Filters erzeugt; das zeigt, was das Verfahren unter richtigen Annahmen leistet, nicht, wie es auf echten GPS-Spuren abschneidet (kein echter Datensatz).
-- **Zwei Effekte sind vermischt, wo der Radsensor mitläuft.** Der Gewinn von 9,7 auf 1,6 m ist überwiegend Sensorfusion, nicht Filtern; deshalb die getrennte Linie „nur GPS“.
+- **Zwei Effekte sind vermischt, wo der Radsensor mitläuft.** Der Gewinn von 9,7 auf 1,6 m stammt aus Glätten über die Zeit und Sensorfusion zugleich; die getrennte Linie „nur GPS“ zeigt den ersten Teil. Dass der Radsensor den größeren Teil beiträgt, gilt nur im Verhältnis (Faktor), nicht in Metern.
 - **Eine einzelne Fahrt ist kein Befund.** NEES und Abdeckung einer Fahrt schwanken stark; belastbar sind nur die Mittel/Mediane über die 40 festen Fahrten.
 - **Die Standardspur ist gutmütig:** ihre NEES liegt unter 2, sie wirkt „zu vorsichtig“. Das ist Zufall dieser Spur, kein Befund; die Orakel-Prüfung über 150 Fahrten ergibt 2,0.
 - **Ankunftszeit** ist nur gerechnet, wo die Geschwindigkeit über 1 m/s liegt; das Ziel ist eine feste Strecke, kein Straßennetz.
