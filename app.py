@@ -232,9 +232,9 @@ if sw is not None:
     q_hi = sw["q"][-1]
     q_one = next(r for r in sw["q"] if r["factor"] == 1.0)
     st.info(
-        f"Nimmt der Filter das Prozessrauschen **zehnmal zu klein** an, steigt die NEES auf {de(worst_q['nees'])} und nur {100 * worst_q['coverage']:.0f} % der Zeit liegt "
+        f"Nimmt der Filter die Fahrunruhe q **zehnmal zu klein** an (Q damit hundertfach zu klein), steigt die NEES auf {de(worst_q['nees'])} und nur {100 * worst_q['coverage']:.0f} % der Zeit liegt "
         f"die Wahrheit im Band. Beim zehnmal zu kleinen Messrauschen sind es {de(worst_r['nees'])} und {100 * worst_r['coverage']:.0f} %. "
-        f"Zu große Annahmen schaden der Ehrlichkeit nicht (zehnmal zu großes Q: NEES {de(q_hi['nees'], 2)}), kosten aber Genauigkeit: "
+        f"Zu große Annahmen schaden der Ehrlichkeit nicht (zehnmal zu große Fahrunruhe q, Q damit hundertfach zu groß: NEES {de(q_hi['nees'], 2)}), kosten aber Genauigkeit: "
         f"der Positionsfehler steigt von {de(q_one['rmse'])} m auf {de(q_hi['rmse'])} m."
     )
 
