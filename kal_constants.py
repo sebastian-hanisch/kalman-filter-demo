@@ -50,5 +50,5 @@ PRESET_HELP = {
     "Standardfahrt (Voreinstellung)": "GPS mit 10 m Rauschen, gleichmäßige Fahrt mit leichten Geschwindigkeitsschwankungen, 20 s Tunnel, Radsensor an; der Filter kennt die wahren Rauschwerte.",
     "Schlechtes GPS": "Das GPS rauscht mit 25 m statt 10 m. Der Filter kennt das und gewichtet die Messung entsprechend weniger.",
     "Filter zu sicher eingestellt": "Der Filter nimmt die Fahrunruhe q zehnmal (Q damit hundertfach) und die Messvarianz R viermal zu klein an: seine Unsicherheitsbänder sind zu schmal, die Konsistenzprüfung schlägt an.",
-    "Langer Tunnel, ohne Radsensor": "40 s ohne GPS und ohne Radsensor: nur die Vorhersage trägt, die Unsicherheit wächst sichtbar.",
+    "Langer Tunnel, ohne Radsensor": "40 s ohne GPS und ohne Radsensor: nur die Vorhersage führt die Schätzung fort, die Unsicherheit wächst sichtbar.",
 }

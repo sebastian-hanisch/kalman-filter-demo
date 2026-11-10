@@ -39,7 +39,7 @@ Alle Zahlen: Standardeinstellung (GPS 10 m, Fahrunruhe 0,3 m/s², Radsensor-Raus
 | Filter glaubt zehnmal weniger Messrauschen? | NEES **6,5**, nur **59 %** im Band. |
 | Und zu große Annahmen? | Ehrlich bleibt er (NEES 1,5), kostet aber Genauigkeit: Positionsfehler **2,3 m** statt 1,6 m bei zehnmal zu großer Fahrunruhe q (Q damit hundertfach zu groß). |
 | 40 s Tunnel ohne Radsensor | Position im Median **49 m** daneben, der Filter gibt **57 m** (1 Sigma, Median) an: das Band wächst mit dem Fehler. Wie oft die Wahrheit im Tunnel im Band liegt, ist nicht gemessen. |
-| 40 s Tunnel mit Radsensor | **1,4 m** Fehler bei 2,7 m angegebener Unsicherheit: die Geschwindigkeit trägt die Position. |
+| 40 s Tunnel mit Radsensor | **1,4 m** Fehler bei 2,7 m angegebener Unsicherheit: die Geschwindigkeit führt die Position fort. |
 | Stationäre Verstärkung (Standard) | Position **0,0315**, Geschwindigkeit **0,0015**; im Lokales-Niveau-Modell ist α = (√(q²+4q) − q)/2: q = 0,01 → 0,0951, 0,1 → 0,2702, 1 → 0,6180. |
 | Ankunftszeit bei 100 s (Standardfahrt, Seed 35) | aus GPS-Rohwerten um 2,1 s daneben, aus dem Filter (mit GPS und Radsensor) um 0,02 s. Eine einzelne Fahrt, keine Aussage über die Streuung. |
 
