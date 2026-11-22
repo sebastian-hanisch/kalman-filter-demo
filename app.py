@@ -283,10 +283,10 @@ st.markdown(
 | Annahme | Was passiert, wenn sie verletzt ist | Wer setzt an |
 |---|---|---|
 | **Bewegungs- und Messmodell sind linear** | Bei Kurvenfahrt oder wenn nicht die Position, sondern Entfernung und Peilung zu einer Bake gemessen werden, ist das Modell nur näherungsweise gültig; der Filter wird überselbstsicher. | Erweiterter Kalman-Filter, Unscented Kalman-Filter |
-| **Rauschen ist gaußsch und seine Größe bekannt** | Ein einzelner GPS-Sprung von 80 m wird wie eine echte Messung eingearbeitet. Zu klein angenommenes Rauschen macht den Filter überselbstsicher (Experiment 2). | Robuste Filter mit Toren oder t-Verteilung |
+| **Rauschen ist gaußsch und seine Größe bekannt** | Ein einzelner GPS-Sprung von 80 m wird wie eine echte Messung eingearbeitet. Zu klein angenommenes Rauschen macht den Filter überselbstsicher (Experiment 2). | Robuste Filter mit Gating oder t-Verteilung |
 | **Eine Hypothese, ein Gipfel** | Fährt das Fahrzeug auf einer von zwei parallelen Straßen, braucht es zwei Hypothesen; ein Gauß-Filter mittelt dazwischen. | Hidden-Markov-Modelle, Partikelfilter |
 | **Nur die Vergangenheit zählt** | Der Filter kennt in Sekunde 60 nichts aus Sekunde 70, obwohl es die Schätzung für 60 verbessern würde, wenn man später auswertet. | Glätter (Rauch-Tung-Striebel) |
-| **Ein Fahrzeug, klare Zuordnung** | Bei mehreren Fahrzeugen muss jede Messung erst einem Fahrzeug zugeordnet werden. | Mehrzielverfolgung mit Datenzuordnung |
+| **Ein Fahrzeug, klare Zuordnung** | Bei mehreren Fahrzeugen muss jede Messung erst einem Fahrzeug zugeordnet werden. | Mehrzielverfolgung mit Datenassoziation |
 | **Das Modell der Fahrt stimmt** | Bei einem Manöver (Bremsen, Abbiegen) ist die Annahme „fast konstante Geschwindigkeit“ falsch; ein hohes Q rettet den Filter, glättet aber schlechter. | Mehrere Bewegungsmodelle (IMM) |
 """
 )
@@ -307,7 +307,7 @@ with st.expander("📐 Mathematische Formulierung"):
 | $z$, $r$ | eine skalare Messung (GPS-Position oder Radsensor-Geschwindigkeit) und ihre Varianz |
 | $h$ | Messvektor: wählt aus dem Zustand die gemessene Größe aus |
 | $\hat x$, $P$ | Schätzung des Zustands und ihre Kovarianz (Unsicherheit) |
-| $S$, $K$ | Varianz der Abweichung zwischen Messung und Vorhersage und Kalman-Verstärkung (das Gewicht der Messung) |
+| $S$, $K$ | Innovationsvarianz (Varianz der Abweichung zwischen Messung und Vorhersage) und Kalman-Verstärkung (das Gewicht der Messung) |
 | $\mathrm{NEES}_k$ | normiertes Fehlerquadrat: wahrer Fehler im Verhältnis zur angegebenen Unsicherheit, Soll gleich der Zustandsdimension |
 | $\alpha$ | Gewicht der neuen Messung im einfachsten Modell (nur ein Niveau) |
 | $q$ | in der Dynamik die Stärke der zufälligen Beschleunigung ($Q \propto q^2$); im einfachsten Modell dagegen das Verhältnis von Niveau- zu Messvarianz (zwei verschiedene Größen mit demselben Buchstaben) |
